@@ -1,0 +1,9 @@
+path: ../yolo_dataset  # dataset root dir
+train: train/images  # weapon images
+val: val/images      # people with weapons
+test: test/images    # people with weapons
+
+names:
+  0: person
+  1: weapon
+  2: person_with_weapon
