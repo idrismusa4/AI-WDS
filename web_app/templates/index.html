@@ -179,11 +179,22 @@
                 align-items: center;
             }
         }
+
+        #detection-stats {
+            margin-top: 1rem;
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="logo-placeholder">WDS</div>
+        <div >
+            <img src="../static/logo.png" alt="SC" width="150px" height="50px" >
+        </div>
         <div class="nav-links">
             <a href="#home">Home</a>
             <a href="#upload">Upload</a>
@@ -193,7 +204,7 @@
 
     <div class="container">
         <section id="home" class="upload-section">
-            <h1>Weapon Detection System</h1>
+            <h1>Weapon Detection System (RAIN Hackathon 1.0)</h1>
             <p>Upload an image for weapon detection. Only single output is allowed.</p>
             <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form" id="upload-form">
                 <div class="file-input-wrapper">
@@ -211,6 +222,7 @@
             <div id ="result-container">
 
             </div>
+            <p id="detection-stats"></p>
 
         </section>
 
@@ -218,19 +230,19 @@
             <h2>Our Team</h2>
             <div class="team-members">
                 <div class="team-member">
-                    <img src="https://via.placeholder.com/150" alt="John Doe" class="team-member-image">
-                    <h3>John Doe</h3>
-                    <p>AI Specialist</p>
+                    <img src="../static/drumar.jpg" alt="Dr Umar" class="team-member-image">
+                    <h3>Umar Adam Ibrahim Ph.D</h3>
+                    <p>Team Lead and AI Expert (Ph.D. in Computer Science, Certified AI Expert)</p>
                 </div>
                 <div class="team-member">
-                    <img src="https://via.placeholder.com/150" alt="Jane Smith" class="team-member-image">
-                    <h3>Jane Smith</h3>
-                    <p>Computer Vision Expert</p>
+                    <img src="../static/Idris.jpg" alt="Idris" class="team-member-image">
+                    <h3>Musa Idris Shaaba</h3>
+                    <p>AI Software Engineer (B.Sc. in Software Engineering)</p>
                 </div>
                 <div class="team-member">
-                    <img src="https://via.placeholder.com/150" alt="Mike Johnson" class="team-member-image">
-                    <h3>Mike Johnson</h3>
-                    <p>Full Stack Developer</p>
+                    <img src="../static/mimi.jpg" alt="Mike Johnson" class="team-member-image">
+                    <h3>Shafa'atu Aminu</h3>
+                    <p>Software Engineer (B.Sc. in Software Engineering)</p>
                 </div>
             </div>
         </section>
@@ -269,19 +281,24 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.blob())
-                .then(blob => {
-                    const imageUrl = URL.createObjectURL(blob);
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        throw new Error(data.error);
+                    }
                     resultContainer.innerHTML = `
-                        <img src="${imageUrl}" alt="Detected Image" class="result-image">
+                        <img src="${data.image_url}" alt="Detected Image" class="result-image">
                     `;
+                    document.getElementById('detection-stats').textContent = data.stats;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    resultContainer.innerHTML = '<p>Error processing image</p>';
+                    resultContainer.innerHTML = `<p>Error: ${error.message}</p>`;
+                    document.getElementById('detection-stats').textContent = '';
                 });
             });
         });
     </script>
 </body>
 </html>
+

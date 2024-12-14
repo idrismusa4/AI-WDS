@@ -50,7 +50,7 @@ class WeaponDetectionSystem:
                           label_text,
                           (int(x1), int(y1) - 5),
                           cv2.FONT_HERSHEY_SIMPLEX,
-                          0.6, color, 2)
+                          1.0, color, 2)
                 
                 detections.append({
                     'class': label,
